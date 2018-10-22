@@ -1,0 +1,31 @@
+import requests, mechanize
+#get response code from website
+from bs4 import BeautifulSoup
+#get all forms from website
+url = 'https://report.boonecountymo.org/mrcjava/servlet/SH01_MP.I00290s?max_rows=500'
+#connect url code 
+br = mechanize.Browser()
+#allow python access to browse code 
+br.open(url)
+#open code with python
+html = br.response().read()
+#get response code from webside
+soup = BeautifulSoup(html, "html.parser")
+#soup reprepesents beautifulsoup html and parser
+main_table = soup.find('tbody',
+    {'id': 'mrc_main_table'}
+)
+#tbody, id and mrc_main_table make up the main table
+row_list = main_table.find_all('tr')
+#search for 'tr' in main_table
+for r in row_list:
+
+    cell_list = r.find_all('td')
+#find cells that contain 'td'
+    if len(cell_list) > 0:
+        for c in cell_list:
+            print c.text.strip()
+#print cells if greater than 0
+        print '----------'
+
+print 'IT WORKED!'
